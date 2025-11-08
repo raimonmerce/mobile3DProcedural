@@ -1,3 +1,7 @@
+import { animated, useSpring } from "@react-spring/three";
+import { useRef, useState } from "react";
+import { Mesh } from "three";
+
 export abstract class CelestialObject {
     public scale: number;
     public color: string;
@@ -20,7 +24,7 @@ export abstract class CelestialObject {
     }
 
     click(): void {
-        console.log("click")
+        console.log(this.info())
     }
 
     abstract info(): string;
