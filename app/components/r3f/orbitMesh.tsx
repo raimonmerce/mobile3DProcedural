@@ -1,14 +1,14 @@
 import { useFrame } from "@react-three/fiber/native";
 import { Orbit} from "../../../src/objects/Orbit";
-import { CelestialMesh } from "./celestialMesh";
+import CelestialMesh from "./celestialMesh";
 import { AdditiveBlending, Object3D, Color, ShaderMaterial } from "three";
-import { useCallback, useState, useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 
 interface OrbitProps {
   orbit: Orbit;
 }
 
-export function OrbitMesh({ orbit }: OrbitProps) {
+export default function OrbitMesh({ orbit }: OrbitProps) {
   const groupRef = useRef<Object3D>(null);
   const meshRef = useRef<Object3D>(null);
   const taurusTube = 0.2;

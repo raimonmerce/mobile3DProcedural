@@ -4,7 +4,7 @@ import { useCallback, useRef, useState  } from "react";
 import { animated, useSpring } from "@react-spring/three";
 import { CelestialObject } from "../../../src/objects/CelestialObject";
 
-export function CelestialMesh({ obj }: { obj: CelestialObject }) {
+export default function CelestialMesh({ obj }: { obj: CelestialObject }) {
   const pivotRef = useRef<Object3D>(null);
   const meshRef = useRef<Object3D>(null);
   const [active, setActive] = useState(false);

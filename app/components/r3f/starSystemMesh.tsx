@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber/native";
 import { StarSystem } from "../../../src/objects/StarSystem";
-import { CelestialMesh } from "./celestialMesh";
-import { OrbitMesh } from "./orbitMesh";
+import CelestialMesh from "./celestialMesh";
+import OrbitMesh from "./orbitMesh";
 import { Object3D } from "three";
 import { useRef } from "react";
 
@@ -9,7 +9,7 @@ interface StarSystemMeshProps {
   starSystem: StarSystem;
 }
 
-export function StarSystemMesh({ starSystem }: StarSystemMeshProps) {
+export default function StarSystemMesh({ starSystem }: StarSystemMeshProps) {
   const systemGroup = useRef<Object3D>(null);
 
   useFrame(() => {
