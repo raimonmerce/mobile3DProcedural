@@ -17,21 +17,17 @@ export default function MainUI({ starSystem }: MainUIProps) {
     if (starSystem) {
       starSystem.explode();
       updateStarSystem(starSystem);
-      // setTimeout(() => {
-      //   const system = new StarSystem();
-      //   updateStarSystem(starSystem);
-      // }, 3000);
     }
   };
 
   const handleCreate = () => {
     const system = new StarSystem();
-    const sun = new Star(1.5, "yellow", 0.03, { x: 0, y: 0.3, z: 0 });
+    const sun = new Star(1.5, "yellow", 0.03, { x: 0, y: 0.3, z: 0 }, "dodecahedron");
     system.addStar(sun);
 
-    const earth = new Planet(1.25, "blue", 0.01, { x: 0, y: 0.1, z: 0 });
-    const mars = new Planet(1, "red", 0.008, { x: 0, y: 0, z: 0 });
-    const venus = new Planet(1, "green", 0.007, { x: 0.3, y: 0, z: 0 });
+    const earth = new Planet(1.25, "blue", 0.01, { x: 0, y: 0.0, z: 0 }, "heart");
+    const mars = new Planet(1, "red", 0.008, { x: 0, y: 0, z: 0 }, "torusknot");
+    const venus = new Planet(1, "green", 0.007, { x: 0.3, y: 0, z: 0 }, "icosahedron");
 
     const earthOrbit = new Orbit(5, earth, 0.01, { x: 0, y: 0.2, z: 0 });
     const marsOrbit = new Orbit(7, mars, 0.008, { x: 0, y: 0, z: 0 });

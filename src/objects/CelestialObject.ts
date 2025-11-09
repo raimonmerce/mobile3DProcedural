@@ -1,6 +1,4 @@
-import { animated, useSpring } from "@react-spring/three";
-import { useRef, useState } from "react";
-import { Mesh } from "three";
+import { GeometryType } from "../types/types";
 
 export abstract class CelestialObject {
     public scale: number;
@@ -8,12 +6,20 @@ export abstract class CelestialObject {
     public tilt: { x: number; y: number; z: number };
     public rotationSpeed: number; 
     public exploding = false;
+    public shape: GeometryType;
 
-    constructor(scale: number, color: string, rotationSpeed: number = 0.01, tilt: { x: number; y: number; z: number }) {
+    constructor(
+        scale: number,
+        color: string, 
+        rotationSpeed: number = 0.01,
+        tilt: { x: number; y: number; z: number },
+        shape: GeometryType
+    ) {
         this.scale = scale;
         this.color = color;
         this.rotationSpeed = rotationSpeed;
         this.tilt = tilt;
+        this.shape = shape;
     }
 
     initialAnimation(): void {

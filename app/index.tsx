@@ -7,6 +7,7 @@ import { Planet} from "../src/objects/Planet";
 import { Orbit} from "../src/objects/Orbit";
 import { useStore } from "../store/useStore";
 import { useEffect, useState } from "react";
+import { GeometryType } from "../src/types/types";
 
 interface StarSystemData {
   star?: {
@@ -15,6 +16,7 @@ interface StarSystemData {
     rotationSpeed: number;
     tilt: { x: number; y: number; z: number };
     exploding: boolean;
+    shape: GeometryType;
   } | null;
   orbits: {
     radius: number;
@@ -26,6 +28,7 @@ interface StarSystemData {
       rotationSpeed: number;
       tilt: { x: number; y: number; z: number };
       exploding: boolean;
+      shape: GeometryType;
     };
   }[];
 }
@@ -46,14 +49,14 @@ export default function Home() {
 
         if (data.star) {
           const st = data.star;
-          const star = new Star(st.scale, st.color, st.rotationSpeed, st.tilt);
+          const star = new Star(st.scale, st.color, st.rotationSpeed, st.tilt, st.shape);
           star.exploding = st.exploding;
           s.addStar(star);
         }
 
         data.orbits.forEach((o: any) => {
           const p = o.planet;
-          const planet = new Planet(p.scale, p.color, p.rotationSpeed, p.tilt);
+          const planet = new Planet(p.scale, p.color, p.rotationSpeed, p.tilt, p.shape);
           planet.exploding = p.exploding;
           s.addOrbit(new Orbit(o.radius, planet, o.rotationSpeed, o.tilt));
         });
