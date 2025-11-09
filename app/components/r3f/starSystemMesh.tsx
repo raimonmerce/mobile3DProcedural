@@ -12,10 +12,10 @@ interface StarSystemMeshProps {
 export default function StarSystemMesh({ starSystem }: StarSystemMeshProps) {
   const systemGroup = useRef<Object3D>(null);
 
-  useFrame(() => {
-    starSystem.orbits.forEach((orbit) => orbit.animate());
-    starSystem.star?.animate();
-  });
+  // useFrame(() => {
+  //   starSystem.orbits.forEach((orbit) => orbit.animate());
+  //   starSystem.star?.animate();
+  // });
 
   return (
     <group ref={systemGroup}>

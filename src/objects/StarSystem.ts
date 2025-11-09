@@ -18,5 +18,13 @@ export class StarSystem {
     restartStarSystem() : void {
         this.star = null;
         this.orbits = [];
-    }    
+    }
+    
+    explode() : void {
+        if (!this.star) return;
+        this.star.exploding = true;
+        this.orbits.forEach((orbit) => {
+            orbit.explode();
+        });
+    }
 }

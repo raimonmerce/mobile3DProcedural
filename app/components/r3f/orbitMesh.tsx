@@ -2,7 +2,8 @@ import { useFrame } from "@react-three/fiber/native";
 import { Orbit} from "../../../src/objects/Orbit";
 import CelestialMesh from "./celestialMesh";
 import { AdditiveBlending, Object3D, Color, ShaderMaterial } from "three";
-import { useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo, useState } from "react";
+import { randomIntBetween } from "../../../src/utils/common";
 
 interface OrbitProps {
   orbit: Orbit;
@@ -13,9 +14,23 @@ export default function OrbitMesh({ orbit }: OrbitProps) {
   const meshRef = useRef<Object3D>(null);
   const taurusTube = 0.2;
 
+  useEffect(() => {
+    if (orbit.exploding) {
+      setTimeout(() => {
+        uniforms.uTrigger.value = true;
+        uniforms.uTimeFadeOut.value = 0.0;
+      }, randomIntBetween(0, 1000));
+    } else {
+      uniforms.uTrigger.value = false;
+    }
+  }, [orbit.exploding]);
+
   const uniforms = useMemo(() => ({
-    time: { value: 0 },
-    baseColor: { value: new Color(orbit.planet.color) }
+    uTime: { value: 0 },
+    uTimeFadeOut: { value: 0 },
+    uColor: { value: new Color(orbit.planet.color) },
+    uExplode: { value: 0.3 },
+    uTrigger: { value: false }
   }), [orbit.planet.color]);
 
   const shaderMaterial = useMemo(
@@ -28,25 +43,34 @@ export default function OrbitMesh({ orbit }: OrbitProps) {
         vertexShader: `
           varying vec2 vUv;
           void main() {
-            vUv = uv;
+              vUv = uv;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-          }
+        }
         `,
         fragmentShader: `
-          uniform float time;
-          uniform vec3 baseColor;
+          uniform float uTime;
+          uniform float uTimeFadeOut;
+          uniform vec3 uColor;
           varying vec2 vUv;
+          uniform bool uTrigger;
 
           void main() {
-            float angle = mod(time - vUv.x, 1.0);
+            float angle = mod(uTime - vUv.x, 1.0);
             float wave = sin(angle * 6.2831);
             float intensity = max(wave, 0.0);
 
             // Color scaled by intensity
-            vec3 color = baseColor * intensity;
+            vec3 color = uColor * intensity;
 
             // Alpha only where there is visible color
-            float alpha = intensity;
+            
+            float alpha = 1.0;
+
+            if (uTrigger) {
+              alpha = 1.0 - clamp(uTimeFadeOut * 20.0, 0.0, 1.0);
+            } else {
+              alpha = intensity;
+            }
 
             gl_FragColor = vec4(color, alpha);
           }
@@ -62,7 +86,8 @@ export default function OrbitMesh({ orbit }: OrbitProps) {
           meshRef.current.rotation.z -= Math.PI * 2;
       }
     }
-    uniforms.time.value += delta * 0.1;
+    uniforms.uTime.value += delta * 0.1;
+    if (orbit.exploding) uniforms.uTimeFadeOut.value += delta * 0.1;
   });
 
   return (

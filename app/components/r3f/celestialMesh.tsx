@@ -1,14 +1,24 @@
 import { useFrame } from '@react-three/fiber/native';
-import { Color, Vector3,AdditiveBlending, ShaderMaterial, Object3D } from "three";
-import { useCallback, useMemo, useRef, useState  } from "react";
+import { Color,AdditiveBlending, ShaderMaterial, Object3D } from "three";
+import { useCallback, useEffect, useMemo, useRef, useState  } from "react";
 import { animated, useSpring } from "@react-spring/three";
 import { CelestialObject } from "../../../src/objects/CelestialObject";
+import { randomIntBetween } from "../../../src/utils/common";
 
 export default function CelestialMesh({ obj }: { obj: CelestialObject }) {
   
   const pivotRef = useRef<Object3D>(null);
   const meshRef = useRef<Object3D>(null);
   const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (obj.exploding) {
+      setTimeout(() => {
+        uniforms.uTrigger.value = true;
+        uniforms.uTime.value = 0.0;
+      }, randomIntBetween(500, 1500));
+    }
+  }, [obj.exploding]);
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
@@ -102,11 +112,9 @@ export default function CelestialMesh({ obj }: { obj: CelestialObject }) {
   });
 
   const handleClick = useCallback(() => {
-    // obj.click();
-    // setActive(true);
-    // setTimeout(() => setActive(false), 400);
-    uniforms.uTrigger.value = true;
-    uniforms.uTime.value = 0.0;
+    obj.click();
+    setActive(true);
+    setTimeout(() => setActive(false), 400);
   }, [obj]);
 
   const isStar = obj.constructor.name === "Star";

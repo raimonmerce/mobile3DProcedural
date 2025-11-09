@@ -7,6 +7,7 @@ export abstract class CelestialObject {
     public color: string;
     public tilt: { x: number; y: number; z: number };
     public rotationSpeed: number; 
+    public exploding = false;
 
     constructor(scale: number, color: string, rotationSpeed: number = 0.01, tilt: { x: number; y: number; z: number }) {
         this.scale = scale;

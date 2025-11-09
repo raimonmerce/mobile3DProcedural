@@ -6,6 +6,7 @@ export class Orbit {
     public rotation: number;
     public tilt: { x: number; y: number; z: number };
     public rotationSpeed: number;
+    public exploding = false;
     
     constructor(radius: number, planet: Planet, rotationSpeed: number = 0.01, tilt: { x: number; y: number; z: number }) {
         this.radius = radius;
@@ -17,5 +18,10 @@ export class Orbit {
 
     animate(): void {
 
+    }
+
+    explode(): void {
+        this.exploding = true;
+        this.planet.exploding = true;
     }
 }
