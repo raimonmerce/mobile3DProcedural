@@ -35,6 +35,9 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "metro": "^0.83.3",
+    "metro-config": "^0.83.3",
+    "metro-core": "^0.83.3",
     "typescript": "^5.9.3"
   },
   "private": true
