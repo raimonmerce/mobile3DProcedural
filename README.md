@@ -64,3 +64,6 @@ npx expo start -c
 ## ✅ Tips
 - Make sure your Expo CLI is up to date.
 - Clear cache (-c) if textures or shaders don’t update after changes.
+
+##  📷 Screenshots
+![Capture of demo](./assets/screenshot.png)
