@@ -8,6 +8,7 @@ import { Orbit} from "../src/objects/Orbit";
 import { useStore } from "../store/useStore";
 import { useEffect, useState } from "react";
 import { GeometryType } from "../src/types/types";
+import { useNavigation } from 'expo-router';
 
 interface StarSystemData {
   star?: {
@@ -34,6 +35,14 @@ interface StarSystemData {
 }
 
 export default function Home() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions?.({
+      title: 'Star System',
+    });
+  }, [navigation]);
+
   const { starSystem, updateStarSystem } = useStore();
   const [localSystem, setLocalSystem] = useState<StarSystem | null>(null);
 

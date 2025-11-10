@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  SafeAreaView,
+} from "react-native";
 import { useStore } from "../../../store/useStore";
 import { Earth, Bomb } from "lucide-react-native";
 import { StarSystem} from "../../../src/objects/StarSystem";
@@ -11,7 +18,7 @@ interface MainUIProps {
 
 export default function MainUI({ starSystem }: MainUIProps) {
   const { updateStarSystem } = useStore();
-  const maxOrbits = 16;
+  const maxOrbits = 100;
   const starFactory = new StarFactory();
   const orbitFactory = new OrbitFactory();
 
@@ -19,11 +26,10 @@ export default function MainUI({ starSystem }: MainUIProps) {
     if (starSystem) {
       starSystem.explode();
       updateStarSystem(starSystem);
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         starSystem = new StarSystem();
         updateStarSystem(starSystem);
       }, 3000);
-      
     }
   };
 
@@ -35,29 +41,56 @@ export default function MainUI({ starSystem }: MainUIProps) {
   };
 
   return (
-    <View style={styles.uiContainer}>
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.iconButton} onPress={handleCreate}>
-          <Earth color="white" size={24} />
-        </TouchableOpacity>
+    <View style={styles.overlay} pointerEvents="box-none">
+      <SafeAreaView style={styles.uiContainerText} pointerEvents="box-none">
+        <View pointerEvents="none"></View>
+        <Text style={styles.counterText}>Number of Planets: {starSystem?.orbits.length}</Text>
+      </SafeAreaView>
 
-        <TouchableOpacity style={styles.iconButton} onPress={handleExplode}>
-          <Bomb color="white" size={24} />
-        </TouchableOpacity>
+      <View style={styles.uiContainerButtons} pointerEvents="box-none">
+        <View style={styles.buttonRow} pointerEvents="auto">
+          <TouchableOpacity style={styles.iconButton} onPress={handleCreate}>
+            <Earth color="white" size={24} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.iconButton} onPress={handleExplode}>
+            <Bomb color="white" size={24} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  uiContainer: {
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999,
+    elevation: Platform.OS === "android" ? 999 : undefined,
+  },
+  uiContainerText: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+    right: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+    elevation: Platform.OS === "android" ? 1000 : undefined,
+  },
+  uiContainerButtons: {
     position: "absolute",
     bottom: 80,
     left: 20,
     right: 20,
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 10,
+    zIndex: 1000,
+    elevation: Platform.OS === "android" ? 1000 : undefined,
   },
   counterText: {
     fontSize: 24,
@@ -76,10 +109,5 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    marginLeft: 8,
   },
 });
