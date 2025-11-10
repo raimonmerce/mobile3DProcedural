@@ -4,4 +4,5 @@ export type GeometryType =
   | 'heart'
   | 'torusknot'
   | 'torus'
+  | 'star'
   | 'box'; 

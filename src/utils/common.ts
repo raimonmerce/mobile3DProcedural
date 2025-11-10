@@ -5,7 +5,9 @@ import {
   Shape,
   ExtrudeGeometry,
   TorusKnotGeometry,
-  TorusGeometry
+  TorusGeometry,
+  Float32BufferAttribute,
+  BufferGeometry
 } from "three";
 
 export function randomBetween(min: number, max: number): number {
@@ -36,11 +38,12 @@ export function getRangFromShape(geometryType: string): {min: number, max: numbe
       return {min: 1.0, max: 1.5};
     case 'torus':
       return {min: 1.5, max: 1.8};
+    case 'star':
+      return {min: 1.0, max: 2.0};
     default:
-      return {min: 1.5, max: 2.0};
+      return {min: 1.5, max: 2.5};
   }
 }
-
 
 export function getGeometry(geometryType: string, scale: number) {
   switch (geometryType.toLowerCase()) {
@@ -77,6 +80,49 @@ export function getGeometry(geometryType: string, scale: number) {
       return new TorusKnotGeometry(scale, scale * 0.3, 100, 16);
     case 'torus':
       return new TorusGeometry(scale, scale * 0.3, 16, 100);
+    case 'star': {
+      const geometry = new BufferGeometry();
+      const vertices: number[] = [];
+      const faces: number[] = [];
+
+      const numPoints = 5;
+      const outerRadius = scale;
+      const innerRadius = scale * 0.4;
+      const depth = scale * 0.25;
+
+      vertices.push(0, 0, depth);
+      vertices.push(0, 0, -depth);
+
+
+      for (let i = 0; i < numPoints * 2; i++) {
+        const angle = (i / (numPoints * 2)) * Math.PI * 2;
+        const radius = i % 2 === 0 ? outerRadius : innerRadius;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const z = 0;
+        vertices.push(x, y, z);
+      }
+
+      for (let i = 0; i < numPoints; i++) {
+        let vert = (i * 2) + 2;
+        const prev = (vert == 2)? (numPoints * 2) + 1 : vert - 1;
+        const next = vert + 1;
+        faces.push(prev, vert, 0);
+        faces.push(vert, next, 0);
+        faces.push(prev, vert, 1);
+        faces.push(vert, next, 1);
+      }
+
+      geometry.setAttribute(
+        'position',
+        new Float32BufferAttribute(vertices, 3)
+      );
+      geometry.setIndex(faces);
+      geometry.computeVertexNormals();
+      geometry.scale(1.0, 1.0, 1.0);
+
+      return geometry;
+    }
     default:
       return new BoxGeometry(scale, scale, scale);
   }
