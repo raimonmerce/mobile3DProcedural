@@ -2,9 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useStore } from "../../../store/useStore";
 import { Earth, Bomb } from "lucide-react-native";
 import { StarSystem} from "../../../src/objects/StarSystem";
-import { Star} from "../../../src/objects/Star";
-import { Planet} from "../../../src/objects/Planet";
-import { Orbit} from "../../../src/objects/Orbit";
+import { StarFactory } from "../../../src/factory/StarFactory";
+import { OrbitFactory } from "../../../src/factory/OrbitFactory";
 
 interface MainUIProps {
   starSystem: StarSystem | null;
@@ -12,6 +11,9 @@ interface MainUIProps {
 
 export default function MainUI({ starSystem }: MainUIProps) {
   const { updateStarSystem } = useStore();
+  const maxOrbits = 16;
+  const starFactory = new StarFactory();
+  const orbitFactory = new OrbitFactory();
 
   const handleExplode = () => {
     if (starSystem) {
@@ -21,22 +23,10 @@ export default function MainUI({ starSystem }: MainUIProps) {
   };
 
   const handleCreate = () => {
-    const system = new StarSystem();
-    const sun = new Star(1.5, "yellow", 0.03, { x: 0, y: 0.3, z: 0 }, "dodecahedron");
-    system.addStar(sun);
-
-    const earth = new Planet(1.25, "blue", 0.01, { x: 0, y: 0.0, z: 0 }, "heart");
-    const mars = new Planet(1, "red", 0.008, { x: 0, y: 0, z: 0 }, "torusknot");
-    const venus = new Planet(1, "green", 0.007, { x: 0.3, y: 0, z: 0 }, "icosahedron");
-
-    const earthOrbit = new Orbit(5, earth, 0.01, { x: 0, y: 0.2, z: 0 });
-    const marsOrbit = new Orbit(7, mars, 0.008, { x: 0, y: 0, z: 0 });
-    const venusOrbit = new Orbit(9, venus, 0.009, { x: 0, y: 0.8, z: 0 });
-
-    system.addOrbit(earthOrbit);
-    system.addOrbit(marsOrbit);
-    system.addOrbit(venusOrbit);
-    updateStarSystem(system);
+    if (!starSystem || starSystem.exploded) starSystem = new StarSystem();
+    if (!starSystem.star) starSystem.addStar(starFactory.create());
+    else if (starSystem.orbits.length < maxOrbits) starSystem.addOrbit(orbitFactory.create());
+    updateStarSystem(starSystem);
   };
 
   return (

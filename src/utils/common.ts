@@ -16,6 +16,14 @@ export function randomIntBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function randomTilt(): { x: number; y: number; z: number } {
+  return {
+    x: randomBetween(-1, 1),
+    y: randomBetween(-1, 1),
+    z: randomBetween(-1, 1)
+  };
+}
+
 export function getGeometry(geometryType: string, scale: number) {
   switch (geometryType.toLowerCase()) {
     case 'icosahedron':

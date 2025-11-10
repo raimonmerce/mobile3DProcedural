@@ -12,7 +12,7 @@ export default function MainScene({ starSystem }: MainSceneProps) {
   return (
     <Canvas
       camera={{
-        position: [0, 0, 100],
+        position: [0, 0, 200],
         fov: 50,
       }}
     >

@@ -9,6 +9,43 @@ interface OrbitProps {
   orbit: Orbit;
 }
 
+const vertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  }
+`
+
+const fragmentShader = `
+  uniform float uTime;
+  uniform float uTimeFadeOut;
+  uniform vec3 uColor;
+  varying vec2 vUv;
+  uniform bool uTrigger;
+
+  void main() {
+    float angle = mod(uTime - vUv.x, 1.0);
+    float wave = sin(angle * 6.2831);
+    float intensity = max(wave, 0.0);
+
+    // Color scaled by intensity
+    vec3 color = uColor * intensity;
+
+    // Alpha only where there is visible color
+    
+    float alpha = 0.0;
+
+    if (uTrigger) {
+      alpha = 1.0 - clamp(uTimeFadeOut * 20.0, 0.0, 1.0);
+    } else {
+      alpha = clamp(uTime *  5.0, 0.0, 1.0);
+    }
+
+    gl_FragColor = vec4(color, alpha);
+  }
+`
+
 export default function OrbitMesh({ orbit }: OrbitProps) {
   const groupRef = useRef<Object3D>(null);
   const meshRef = useRef<Object3D>(null);
@@ -40,41 +77,8 @@ export default function OrbitMesh({ orbit }: OrbitProps) {
         transparent: true,
         depthWrite: false,
         blending: AdditiveBlending,
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-              vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-        }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform float uTimeFadeOut;
-          uniform vec3 uColor;
-          varying vec2 vUv;
-          uniform bool uTrigger;
-
-          void main() {
-            float angle = mod(uTime - vUv.x, 1.0);
-            float wave = sin(angle * 6.2831);
-            float intensity = max(wave, 0.0);
-
-            // Color scaled by intensity
-            vec3 color = uColor * intensity;
-
-            // Alpha only where there is visible color
-            
-            float alpha = 1.0;
-
-            if (uTrigger) {
-              alpha = 1.0 - clamp(uTimeFadeOut * 20.0, 0.0, 1.0);
-            } else {
-              alpha = intensity;
-            }
-
-            gl_FragColor = vec4(color, alpha);
-          }
-        `
+        vertexShader,
+        fragmentShader
       }),
     [uniforms]
   );

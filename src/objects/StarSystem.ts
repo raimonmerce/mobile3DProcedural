@@ -4,6 +4,7 @@ import { Orbit } from "./Orbit";
 export class StarSystem {
     public star: Star | null = null;
     public orbits: Orbit[] = [];
+    public exploded = false;
     
     constructor() {}
 
@@ -22,6 +23,7 @@ export class StarSystem {
     
     explode() : void {
         if (!this.star) return;
+        this.exploded = true;
         this.star.exploding = true;
         this.orbits.forEach((orbit) => {
             orbit.explode();

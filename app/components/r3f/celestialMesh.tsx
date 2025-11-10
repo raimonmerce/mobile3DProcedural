@@ -33,6 +33,10 @@ void main() {
         move = normal * uExplode * grow;
         vec3 jitter = hash3(localPos + uTime) * 0.2;
         move += jitter;
+    } else {
+        float assemble = 1.0 - clamp(uTime * 10.0, 0.0, 1.0); // 1 → 0 over time
+        vec3 jitter = hash3(localPos + uTime) * 0.4; // start scattered
+        move = normal * uExplode * assemble * 25.0 + jitter * assemble;
     }
 
     vec4 worldPos = modelMatrix * vec4(localPos + move, 1.0);
@@ -58,7 +62,7 @@ varying vec3 vNormal;
 varying vec3 vWorldPos;
 
 void main() {
-  float alpha = 1.0;
+  float alpha = clamp(uTime * 5.0, 0.0, 1.0);
   vec3 finalColor = vec3(0.0);
 
   if (uTriggerExplosion) {
@@ -89,10 +93,12 @@ export default function CelestialMesh({ obj}: { obj: CelestialObject }) {
     uColor: { value: new Color(obj.color) },
     uExplode: { value: 0.6 },
     uTriggerExplosion: { value: false },
-    uAmbient: { value: 0.5 }, 
+    uTriggerCreation: { value: true },
+    uAmbient: { value: obj.constructor.name === "Star"? 1.0 : 0.4 }, 
     uLightPos: { value: new Vector3(0, 0, 0) },
-    uLightColor: { value: new Color(starSystem?.star?.color) },
-    uLightIntensity: { value: 1.0 },
+    // uLightColor: { value: new Color(starSystem?.star?.color) },
+    uLightColor: { value: new Color("white") },
+    uLightIntensity: { value: 7.5 },
     uIsStar: { value: obj.constructor.name === "Star" }
   }), [obj, starSystem]);
 
