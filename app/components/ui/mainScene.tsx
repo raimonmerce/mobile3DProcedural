@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber/native";
-import { OrbitControls, Box } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import StarSystemMesh from "../r3f/starSystemMesh";
 import { StarSystem} from "../../../src/objects/StarSystem";
 
