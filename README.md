@@ -66,4 +66,4 @@ npx expo start -c
 - Clear cache (-c) if textures or shaders don’t update after changes.
 
 ##  📷 Screenshots
-![Capture of demo](./assets/screenshot.png)
+![Capture of demo](./assets/screenshot.jpg)
