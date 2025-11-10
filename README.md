@@ -2,9 +2,11 @@
 
 Generate your **procedural Star System**!  
 
+## 📋 Instructions
+
 - Click the **Earth** button to generate a new star and planets.  
 - Click the **Bomb** button to collapse the system and rebuild a new one.  
-
+- Click the **Star** and **Plants** to trigger spring animation.  
 ---
 
 ## 🛠️ Tech Stack
@@ -48,12 +50,6 @@ npx expo start -c
 ```
 ---
 
-## 📱 Usage
-- **Generate Star System:** Tap the Earth icon.
-- **Collapse & Rebuild:** Tap the Bomb icon.
-- **Interact with stars and planets:** Click them to trigger animations.
----
-
 ## ✨ Future Improvements
 - Add more star and planet shapes.
 - Add background, music or sound effects.
@@ -65,5 +61,6 @@ npx expo start -c
 - Make sure your Expo CLI is up to date.
 - Clear cache (-c) if textures or shaders don’t update after changes.
 
+---
 ##  📷 Screenshots
 ![Capture of demo](./assets/screenshot.jpg)
