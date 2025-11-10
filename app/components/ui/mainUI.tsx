@@ -19,6 +19,11 @@ export default function MainUI({ starSystem }: MainUIProps) {
     if (starSystem) {
       starSystem.explode();
       updateStarSystem(starSystem);
+      const timeout = setTimeout(() => {
+        starSystem = new StarSystem();
+        updateStarSystem(starSystem);
+      }, 3000);
+      
     }
   };
 

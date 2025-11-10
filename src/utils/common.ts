@@ -24,6 +24,24 @@ export function randomTilt(): { x: number; y: number; z: number } {
   };
 }
 
+export function getRangFromShape(geometryType: string): {min: number, max: number} {
+  switch (geometryType.toLowerCase()) {
+    case 'icosahedron':
+      return {min: 1.5, max: 1.8};
+    case 'dodecahedron':
+      return {min: 1.5, max: 1.8};
+    case 'heart': 
+      return {min: 1.5, max: 1.9};
+    case 'torusknot':
+      return {min: 1.0, max: 1.5};
+    case 'torus':
+      return {min: 1.5, max: 1.8};
+    default:
+      return {min: 1.5, max: 2.0};
+  }
+}
+
+
 export function getGeometry(geometryType: string, scale: number) {
   switch (geometryType.toLowerCase()) {
     case 'icosahedron':

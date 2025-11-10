@@ -11,10 +11,9 @@ export class OrbitFactory {
 
   create(): Orbit {
     const planet = this.planetFactory.create();
-    const radius = randomBetween(3, 20);
-    const rotationSpeed = randomBetween(0.001, 0.02);
+    const radius = randomBetween(10, 20);
+    const rotationSpeed = randomBetween(0.01, 0.02);
     const tilt = randomTilt();
-
     return new Orbit(radius, planet, rotationSpeed, tilt);
   }
 }

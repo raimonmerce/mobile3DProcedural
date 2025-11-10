@@ -70,7 +70,8 @@ void main() {
   }
   
   if (uIsStar) {
-    finalColor = uColor;
+    float pulse = 0.5 + 0.1 * sin(uTime * 100.0);
+    finalColor = mix(uColor, vec3(1.0), pulse);
   } else {
     vec3 lightDir = normalize(uLightPos - vWorldPos);
     float diff = max(dot(normalize(vNormal), lightDir), 0.0);

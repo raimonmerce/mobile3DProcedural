@@ -23,9 +23,10 @@ const fragmentShader = `
   uniform vec3 uColor;
   varying vec2 vUv;
   uniform bool uTrigger;
+  uniform float uRotationSpeed;
 
   void main() {
-    float angle = mod(uTime - vUv.x, 1.0);
+    float angle = mod((uTime * uRotationSpeed) - vUv.x, 1.0);
     float wave = sin(angle * 6.2831);
     float intensity = max(wave, 0.0);
 
@@ -67,7 +68,8 @@ export default function OrbitMesh({ orbit }: OrbitProps) {
     uTimeFadeOut: { value: 0 },
     uColor: { value: new Color(orbit.planet.color) },
     uExplode: { value: 0.3 },
-    uTrigger: { value: false }
+    uTrigger: { value: false },
+    uRotationSpeed: { value: orbit.rotationSpeed }
   }), [orbit.planet.color]);
 
   const shaderMaterial = useMemo(

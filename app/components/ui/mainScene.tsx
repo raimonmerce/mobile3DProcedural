@@ -12,7 +12,7 @@ export default function MainScene({ starSystem }: MainSceneProps) {
   return (
     <Canvas
       camera={{
-        position: [0, 0, 200],
+        position: [0, 0, 100],
         fov: 50,
       }}
     >
@@ -24,10 +24,10 @@ export default function MainScene({ starSystem }: MainSceneProps) {
       }
       <OrbitControls
         enablePan={false}
-        enableZoom={true}
+        enableZoom={false}
         enableRotate={true}
         minDistance={5}
-        maxDistance={50}
+        maxDistance={150}
         target={[0, 0, 0]}
       />
     </Canvas>
